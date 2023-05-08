@@ -6,6 +6,8 @@ import { User, UserDTO } from './Types.ts'
 
 function App() {
   const [user, setUser] = useState({} as User);
+  const [name, setName] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [userIsLoaded, setUserIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -20,9 +22,16 @@ function App() {
     fetchUser().then(result => {
       setUser(result);
       setUserIsLoaded(true);
+      setName(`${user.name.first} ${user.name.last}`)
     });
 
   }, []);
+
+  const changeName = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Return') {
+      setName(event.currentTarget.value);
+    }
+  }
 
   return <>
     <header className="header">
@@ -38,7 +47,7 @@ function App() {
     {
       userIsLoaded && (
         <main className="main">
-          <h2>{user.name.title} {user.name.first} {user.name.last}</h2>
+          <h2>{user.name.title} <input className="main--name" type="text" onKeyUp={event => changeName(event)}/></h2>
           <div className="main--user">
             <img src={user.picture.large} alt="User Photo" />
             <div className="main--user--details">
