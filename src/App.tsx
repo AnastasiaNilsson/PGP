@@ -38,8 +38,21 @@ function App() {
     {
       userIsLoaded && (
         <main className="main">
-          <h2>{user.name.title} {user.name.first} {user.name.last} (age {user.dob.age})</h2>
-          <p>Address: {user.location.street.number} {user.location.street.name}, {user.location.postcode}, {user.location.city}, {user.location.country}</p>
+          <h2>{user.name.title} {user.name.first} {user.name.last}</h2>
+          <div className="main--user">
+            <img src={user.picture.large} alt="User Photo" />
+            <div className="main--user--details">
+              <span><b>Age:</b> {user.dob.age}</span>
+              <span><b>Gender:</b> {user.gender}</span>
+              <span><b>Email:</b> {user.email}</span>
+              <span><br /><b>Address:</b></span>
+
+              <span>{user.location.street.number} {user.location.street.name}</span>
+              <span>{user.location.postcode}, {user.location.city}</span>
+              <span>{user.location.country}</span>
+            </div>
+            
+          </div>
         </main>
       )
     }
