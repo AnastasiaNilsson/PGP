@@ -53,6 +53,19 @@
   justify-content: space-between;
 }
 
+.main--header {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items:end;
+}
+
+.main--header input {
+  padding: 4px;
+  margin: 0;
+  height: 100%;
+}
+
 .main--user {
   display: flex;
   flex-flow: row;

@@ -6,30 +6,31 @@ import { User, UserDTO } from './Types.ts'
 
 function App() {
   const [user, setUser] = useState({} as User);
-  const [name, setName] = useState("");
-  const [inputValue, setInputValue] = useState("");
   const [userIsLoaded, setUserIsLoaded] = useState(false);
 
+  const [name, setName] = useState("");
+  const [editingName, setEditingName] = useState(false);
+  
   useEffect(() => {
 
     const fetchUser = async () => {
-      return await fetch("https://randomuser.me/api/").then(async response => {
+      await fetch("https://randomuser.me/api/").then(async response => {
         const json: UserDTO = await response.json();
         return json.results[0] as User;
+      }).then(user => {
+        setUser(user)
+        setName(`${user.name.first} ${user.name.last}`)
+        setUserIsLoaded(true);
       });
     };
 
-    fetchUser().then(result => {
-      setUser(result);
-      setUserIsLoaded(true);
-      setName(`${user.name.first} ${user.name.last}`)
-    });
-
+    fetchUser();
   }, []);
 
   const changeName = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Return') {
+    if (event.key === 'Enter') {
       setName(event.currentTarget.value);
+      setEditingName(false);
     }
   }
 
@@ -47,7 +48,14 @@ function App() {
     {
       userIsLoaded && (
         <main className="main">
-          <h2>{user.name.title} <input className="main--name" type="text" onKeyUp={event => changeName(event)}/></h2>
+          <div className="main--header">
+            <h2>
+              <span>{user.name.title} </span>
+              {
+                !editingName ? <span onClick={e => setEditingName(true)}> {name}</span> : <input className="main--header--name" type="text" defaultValue={name} onKeyUp={event => changeName(event)}/>
+              }
+            </h2>
+          </div>
           <div className="main--user">
             <img src={user.picture.large} alt="User Photo" />
             <div className="main--user--details">
